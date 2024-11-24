@@ -8,11 +8,10 @@ To write a program to predict the profit of a city using the linear regression m
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. Import the required packages and print the present data.
-2. Print the placement data and salary data.
-3. Find the null and duplicate values.
-4. Using logistic regression find the predicted values of accuracy , confusion matrices.
-5. Display the results.
+1. Import the required library and read the dataframe.
+2.write the function computecost to generate the cost function.
+3.perform iterations og gradient steps with learning rate.
+4.plot the cost function using gradient descent and generate the required graph.
 
 ## Program:
 ```
@@ -21,50 +20,35 @@ Program to implement the linear regression using gradient descent.
 Developed by: Ashish S
 RegisterNumber: 24900566 
 */
+import numpy as np
 import pandas as pd
-data=pd.read_csv("Placement_Data.csv")
-print(data.head())
-data1=data.copy()
-data1=data1.drop(["sl_no","salary"],axis=1)
-print(data1.head())
-data1.isnull().sum()
-data1.duplicated().sum()
-from sklearn.preprocessing import LabelEncoder
-le=LabelEncoder()
-data1["gender"]=le.fit_transform(data1["gender"])
-data1["ssc_b"]=le.fit_transform(data1["ssc_b"])
-data1["hsc_b"]=le.fit_transform(data1["hsc_b"])
-data1["hsc_s"]=le.fit_transform(data1["hsc_s"])
-data1["degree_t"]=le.fit_transform(data1["degree_t"])
-data1["workex"]=le.fit_transform(data1["workex"])
-data1["specialisation"]=le.fit_transform(data1["specialisation"])
-data1["status"]=le.fit_transform(data1["status"])
-print(data1)
-x=data1.iloc[:,:-1]
-x
-y=data1["status"]
-y
-from sklearn.model_selection import train_test_split
-x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
-from sklearn.linear_model import LogisticRegression
-lr=LogisticRegression(solver="liblinear")
-lr.fit(x_train,y_train)
-y_pred=lr.predict(x_test)
-print(y_pred)
-from sklearn.metrics import accuracy_score
-accuracy=accuracy_score(y_test,y_pred)
-print(accuracy)
-from sklearn.metrics import confusion_matrix
-confusion=confusion_matrix(y_test,y_pred)
-print(confusion)
-from sklearn.metrics import classification_report
-classification_report1=classification_report(y_test,y_pred)
-print(classification_report1)
-lr.predict([[1,80,1,90,1,1,90,1,0,85,1,85]])
-
+from sklearn.preprocessing import StandardScaler
+def linear_regression(X1, y, learning_rate=0.01,num_iters=1000):
+    X=np.c_[np.ones(len(X1)),X1]
+    theta=np.zeros(X.shape[1]).reshape(-1,1)
+    for _ in range(num_iters):
+        predictions=(X).dot(theta).reshape(-1,1)
+        errors=(predictions-y).reshape(-1,1)
+        theta-=learning_rate*(1/len (X1))*X.T.dot(errors)
+    return theta
+data=pd.read_csv('50_Startups.csv',header=None)
+X=(data.iloc[1:, :-2].values)
+X1=X.astype(float)
+scaler=StandardScaler()
+y=(data.iloc[1:,-1].values).reshape(-1,1)
+X1_Scaled=scaler.fit_transform(X1)
+Y1_Scaled=scaler.fit_transform(y)
+theta=linear_regression(X1_Scaled, Y1_Scaled)
+new_data=np.array([165349.2,136897.8,471784.1]).reshape(-1,1)
+new_Scaled=scaler.fit_transform(new_data)
+prediction=np.dot(np.append(1,new_Scaled),theta)
+prediction=prediction.reshape(-1,1)
+pre=scaler.inverse_transform(prediction)
+print(f"Predicted value: {pre}")
 
 ## Output:
-https://github.com/user-attachments/assets/6ee48ba4-9347-4ff6-be3a-1022274c6d34
+
+https://github.com/user-attachments/assets/1adbc53f-23ad-4953-9da1-5ab19c5ed7bf
 
 
 
