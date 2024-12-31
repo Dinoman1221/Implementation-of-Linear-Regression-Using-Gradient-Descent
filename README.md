@@ -45,10 +45,12 @@ prediction=np.dot(np.append(1,new_Scaled),theta)
 prediction=prediction.reshape(-1,1)
 pre=scaler.inverse_transform(prediction)
 print(f"Predicted value: {pre}")
+```
 
 ## Output:
 
-https://github.com/user-attachments/assets/1adbc53f-23ad-4953-9da1-5ab19c5ed7bf
+![image](https://github.com/user-attachments/assets/f808e93b-d09c-42af-aaa9-f25d19ab835d)
+
 
 
 
